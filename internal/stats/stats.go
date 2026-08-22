@@ -26,6 +26,10 @@ type SeasonStats struct {
 
 // Compute calculates season statistics from match results.
 func Compute(results []standings.Result) *SeasonStats {
+	return runCompute(results)
+}
+
+func computeLive(results []standings.Result) *SeasonStats {
 	s := &SeasonStats{TotalMatches: len(results)}
 	if len(results) == 0 {
 		return s
