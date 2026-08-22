@@ -115,6 +115,9 @@ func Generate(teams []string) (*Bracket, error) {
 
 // Advance records a result and advances the winner to the next round.
 func (b *Bracket) Advance(roundIdx, slot int, result MatchResult) error {
+	if err := consumeAdvanceErr(); err != nil {
+		return err
+	}
 	if roundIdx < 0 || roundIdx >= len(b.Rounds) {
 		return fmt.Errorf("invalid round %d", roundIdx)
 	}
