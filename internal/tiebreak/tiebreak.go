@@ -79,7 +79,7 @@ func sortTiedGroup(group []standings.Row, results []standings.Result, cfg *Confi
 	awayGoals := computeAwayGoals(group, results)
 
 	sort.SliceStable(group, func(i, j int) bool {
-		for _, rule := range cfg.Rules {
+		for _, rule := range rulesForTiedGroup(len(group), cfg) {
 			cmp := compareByRule(group[i], group[j], rule, h2h, awayGoals)
 			if cmp != 0 {
 				return cmp > 0
