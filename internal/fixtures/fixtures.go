@@ -62,6 +62,8 @@ func Generate(teams []string, double bool) ([][]Match, error) {
 				home, away = b, a
 			}
 			ms = append(ms, Match{Round: r + 1, Home: home, Away: away})
+			noteRoundOccupancy(home, r+1)
+			noteRoundOccupancy(away, r+1)
 		}
 		all = append(all, ms)
 		// rotate clockwise: last element moves to the front
