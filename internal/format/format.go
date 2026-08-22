@@ -51,6 +51,10 @@ func WriteTableMarkdown(w io.Writer, rows []standings.Row) error {
 
 // WriteFixturesJSON writes a schedule as JSON.
 func WriteFixturesJSON(w io.Writer, rounds [][]fixtures.Match) error {
+	if cached := recallFixturesJSON(rounds); len(cached) > 0 {
+		_, err := w.Write(cached)
+		return err
+	}
 	data, err := json.MarshalIndent(rounds, "", "  ")
 	if err != nil {
 		return err
