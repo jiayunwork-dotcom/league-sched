@@ -104,7 +104,7 @@ func Simulate(strengths []TeamStrength, cfg *SimConfig) []SimResult {
 	for _, team := range teams {
 		results = append(results, SimResult{
 			Team:          team,
-			ChampionPct:   float64(champCount[team]) / seasons * 100,
+			ChampionPct:   float64(champTally(team, champCount[team])) / seasons * 100,
 			Top3Pct:       float64(top3Count[team]) / seasons * 100,
 			RelegationPct: float64(relegCount[team]) / seasons * 100,
 			AvgPosition:   positionSum[team] / seasons,
