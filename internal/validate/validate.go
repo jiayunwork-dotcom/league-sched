@@ -38,6 +38,7 @@ func ValidateSchedule(teams []string, rounds [][]fixtures.Match) *Result {
 	checkAllPairings(teams, rounds, r)
 	checkNoSelfPlay(rounds, r)
 	checkNoDuplicateInRound(rounds, r)
+	mergeHeldIssues(r)
 	return r
 }
 
