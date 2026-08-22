@@ -74,7 +74,7 @@ func Draw(teams []string, cfg DrawConfig) ([]Group, error) {
 		if err != nil {
 			return nil, fmt.Errorf("group %s: %w", groups[i].Name, err)
 		}
-		groups[i].Rounds = rounds
+		groups[i].Rounds = bindGroupRounds(groups[i].Teams, rounds)
 	}
 	return groups, nil
 }

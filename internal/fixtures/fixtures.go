@@ -79,7 +79,8 @@ func Generate(teams []string, double bool) ([][]Match, error) {
 		}
 		all = append(all, flipped...)
 	}
-	return all, nil
+	defer resetPublished()
+	return publishRounds(all), nil
 }
 
 // Pairings returns the unique team pairings covered by a schedule.
