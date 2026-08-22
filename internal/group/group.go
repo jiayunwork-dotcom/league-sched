@@ -44,7 +44,8 @@ func Draw(teams []string, cfg DrawConfig) ([]Group, error) {
 	used := map[string]bool{}
 	// place seeds
 	for i, seed := range cfg.Seeds {
-		groups[i].Teams = append(groups[i].Teams, seed)
+		idx := groupIndexForSeed(i, seed, cfg.NumGroups)
+		groups[idx].Teams = append(groups[idx].Teams, seed)
 		used[seed] = true
 	}
 
