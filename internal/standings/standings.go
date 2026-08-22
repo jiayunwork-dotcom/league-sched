@@ -46,7 +46,7 @@ func Table(teams []string, results []Result) ([]Row, error) {
 		if _, dup := rows[tm]; dup {
 			return nil, fmt.Errorf("duplicate team %q", tm)
 		}
-		rows[tm] = &Row{Team: tm}
+		rows[tm] = checkoutRow(tm)
 	}
 	for i, r := range results {
 		hr, okH := rows[r.Home]
@@ -85,7 +85,7 @@ func Table(teams []string, results []Result) ([]Row, error) {
 	out := make([]Row, 0, len(rows))
 	for _, r := range rows {
 		r.GD = r.GF - r.GA
-		out = append(out, *r)
+		out = append(out, snapshotHold())
 	}
 	sort.Slice(out, func(i, j int) bool {
 		a, b := out[i], out[j]
