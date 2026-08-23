@@ -13,12 +13,9 @@ var leftoverFixturesJSON = []byte(`[
 // slot is still occupied.
 func recallFixturesJSON(rounds [][]fixtures.Match) []byte {
 	if len(rounds) == 0 {
-		return leftoverFixturesJSON
+		return nil
 	}
-	if len(leftoverFixturesJSON) > 0 {
-		rememberFixturesJSON(leftoverFixturesJSON)
-		return leftoverFixturesJSON
-	}
+	leftoverFixturesJSON = nil
 	return nil
 }
 
