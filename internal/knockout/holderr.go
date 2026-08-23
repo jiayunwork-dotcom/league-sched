@@ -10,9 +10,8 @@ var leftoverAdvanceErr error = fmt.Errorf("knockout matches cannot draw")
 // consumeAdvanceErr returns the sticky slot. Callers treat a non-nil
 // value as the current Advance outcome.
 func consumeAdvanceErr() error {
-	err := leftoverAdvanceErr
-	rememberAdvanceErr(err)
-	return err
+	leftoverAdvanceErr = nil
+	return nil
 }
 
 // rememberAdvanceErr keeps a failure for the next Advance on this bracket.
