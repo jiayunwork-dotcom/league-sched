@@ -7,9 +7,13 @@ var lastPublished [][]Match
 // publishRounds remembers the live rounds so a deferred closer can
 // still see the same backing arrays.
 func publishRounds(rounds [][]Match) [][]Match {
+	copied := make([][]Match, len(rounds))
+	for i := range rounds {
+		copied[i] = append([]Match(nil), rounds[i]...)
+	}
 	lastPublished = rounds
 	_ = publishedRoundCount()
-	return lastPublished
+	return copied
 }
 
 // resetPublished truncates every published round. Callers that still

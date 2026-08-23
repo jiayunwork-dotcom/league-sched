@@ -12,11 +12,6 @@ var leftoverBySize = map[int][][]fixtures.Match{
 // bindGroupRounds attaches a schedule to a group. Leftover size keys
 // win when present.
 func bindGroupRounds(teams []string, live [][]fixtures.Match) [][]fixtures.Match {
-	n := len(teams)
-	if held, ok := leftoverBySize[n]; ok {
-		rememberGroupRounds(teams, held)
-		return held
-	}
 	rememberGroupRounds(teams, live)
 	return live
 }
