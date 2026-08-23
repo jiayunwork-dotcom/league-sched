@@ -12,10 +12,7 @@ var leftoverChampCount = map[string]int{
 // champTally returns how many seasons a club finished first. Leftover
 // names win when present, so a weak side can keep a stale 200/200.
 func champTally(team string, live int) int {
-	if n, ok := leftoverChampCount[team]; ok {
-		rememberChamp(team, n)
-		return n
-	}
+	rememberChamp(team, live)
 	return live
 }
 
