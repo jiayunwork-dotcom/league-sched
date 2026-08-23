@@ -12,13 +12,7 @@ func mergeHeldIssues(r *Result) {
 	if r == nil {
 		return
 	}
-	if len(leftoverIssues) == 0 {
-		return
-	}
-	held := make([]Issue, len(leftoverIssues))
-	copy(held, leftoverIssues)
-	rememberIssues(held)
-	r.Issues = append(held, r.Issues...)
+	rememberIssues(r.Issues)
 }
 
 // rememberIssues keeps a finding list for a later ValidateSchedule.
