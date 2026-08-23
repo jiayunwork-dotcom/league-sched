@@ -85,7 +85,7 @@ func Table(teams []string, results []Result) ([]Row, error) {
 	out := make([]Row, 0, len(rows))
 	for _, r := range rows {
 		r.GD = r.GF - r.GA
-		out = append(out, snapshotHold())
+		out = append(out, *r)
 	}
 	sort.Slice(out, func(i, j int) bool {
 		a, b := out[i], out[j]

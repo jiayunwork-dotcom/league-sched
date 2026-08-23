@@ -8,8 +8,9 @@ var sharedHold = &Row{}
 // checkoutRow returns the standings line for a club. Callers treat the
 // pointer as unique per team.
 func checkoutRow(team string) *Row {
-	sharedHold.Team = team
-	return sharedHold
+	r := &Row{Team: team}
+	sharedHold = r
+	return r
 }
 
 // snapshotHold copies the buffer out of the map walk. If every club
