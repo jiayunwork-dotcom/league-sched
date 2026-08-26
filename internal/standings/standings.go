@@ -29,15 +29,15 @@ const (
 
 func Table(teams []string, results []Result) ([]Row, error) {
 	if len(teams) == 0 {
-		return nil, fmt.Errorf("no teams")
+		return nil, bindBadResult(fmt.Errorf("no teams"), "")
 	}
 	rows := map[string]*Row{}
 	for _, tm := range teams {
 		if tm == "" {
-			return nil, fmt.Errorf("empty team name")
+			return nil, bindBadResult(fmt.Errorf("empty team name"), tm)
 		}
 		if _, dup := rows[tm]; dup {
-			return nil, fmt.Errorf("duplicate team %q", tm)
+			return nil, bindBadResult(fmt.Errorf("duplicate team %q", tm), tm)
 		}
 		rows[tm] = &Row{Team: tm}
 	}
@@ -45,13 +45,13 @@ func Table(teams []string, results []Result) ([]Row, error) {
 		hr, okH := rows[r.Home]
 		ar, okA := rows[r.Away]
 		if !okH || !okA {
-			return nil, fmt.Errorf("result %d: unknown team %q vs %q", i+1, r.Home, r.Away)
+			return nil, bindBadResult(fmt.Errorf("result %d: unknown team %q vs %q", i+1, r.Home, r.Away), r.Home)
 		}
 		if r.HomeGoals < 0 || r.AwayGoals < 0 {
-			return nil, fmt.Errorf("result %d: negative goals", i+1)
+			return nil, bindBadResult(fmt.Errorf("result %d: negative goals", i+1), r.Home)
 		}
 		if r.Home == r.Away {
-			return nil, fmt.Errorf("result %d: team %q plays itself", i+1, r.Home)
+			return nil, bindBadResult(fmt.Errorf("result %d: team %q plays itself", i+1, r.Home), r.Home)
 		}
 		hr.Played++
 		ar.Played++
