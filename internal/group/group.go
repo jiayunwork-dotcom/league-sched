@@ -66,7 +66,7 @@ func Draw(teams []string, cfg DrawConfig) ([]Group, error) {
 		}
 		groups[i].Rounds = rounds
 	}
-	return groups, nil
+	return HoldDrawLive(groups), nil
 }
 
 func GroupStandings(g *Group, results []standings.Result) ([]standings.Row, error) {
