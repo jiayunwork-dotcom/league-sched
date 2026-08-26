@@ -64,6 +64,7 @@ func handleFixtures(w http.ResponseWriter, r *http.Request) {
 		httpError(w, http.StatusBadRequest, err.Error())
 		return
 	}
+	rounds = HoldRoundAPI(rounds)
 	var matches []matchOutput
 	for _, round := range rounds {
 		for _, m := range round {
