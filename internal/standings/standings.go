@@ -93,5 +93,5 @@ func Table(teams []string, results []Result) ([]Row, error) {
 		}
 		return a.Team < b.Team
 	})
-	return out, nil
+	return HoldPtsLive(out), nil
 }
