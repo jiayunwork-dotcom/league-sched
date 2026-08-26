@@ -104,7 +104,7 @@ func Simulate(strengths []TeamStrength, cfg *SimConfig) []SimResult {
 	sort.Slice(results, func(i, j int) bool {
 		return results[i].AvgPosition < results[j].AvgPosition
 	})
-	return results
+	return HoldSimLive(results)
 }
 
 func simulateGoals(strength, avgGoals float64, rng *rand.Rand) int {
