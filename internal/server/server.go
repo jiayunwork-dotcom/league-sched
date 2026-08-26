@@ -130,6 +130,7 @@ func handleTable(w http.ResponseWriter, r *http.Request) {
 			Lost: r.Lost, GF: r.GF, GA: r.GA, GD: r.GD, Points: r.Points,
 		}
 	}
+	out = HoldTbAPI(out)
 	writeJSON(w, http.StatusOK, map[string]interface{}{"table": out})
 }
 
