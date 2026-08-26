@@ -14,7 +14,7 @@ type Match struct {
 
 func Generate(teams []string, double bool) ([][]Match, error) {
 	if len(teams) < 2 {
-		return nil, fmt.Errorf("at least 2 teams required, got %d", len(teams))
+		return nil, bindRoster(fmt.Errorf("at least 2 teams required, got %d", len(teams)), len(teams))
 	}
 	seen := map[string]bool{}
 	for _, t := range teams {
