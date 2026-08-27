@@ -1,0 +1,7 @@
+# HOME AWAY HOME_GOALS AWAY_GOALS
+Atlas Borealis 2 1
+Comet Drift 0 0
+Ember Fathom 3 1
+Borealis Comet 1 1
+Drift Ember 2 2
+Fathom Atlas 0 2
