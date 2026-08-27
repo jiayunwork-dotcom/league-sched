@@ -1,0 +1,125 @@
+package group
+
+import (
+	"fmt"
+	"sort"
+
+	"league-sched/internal/fixtures"
+	"league-sched/internal/standings"
+)
+
+type Group struct {
+	Name   string
+	Teams  []string
+	Rounds [][]fixtures.Match
+}
+
+type DrawConfig struct {
+	NumGroups int
+	Seeds     []string
+}
+
+func Draw(teams []string, cfg DrawConfig) ([]Group, error) {
+	if cfg.NumGroups <= 0 {
+		return nil, fmt.Errorf("numGroups must be > 0")
+	}
+	if len(teams) < cfg.NumGroups*2 {
+		return nil, fmt.Errorf("need at least %d teams for %d groups of 2", cfg.NumGroups*2, cfg.NumGroups)
+	}
+	if len(cfg.Seeds) > cfg.NumGroups {
+		return nil, fmt.Errorf("more seeds (%d) than groups (%d)", len(cfg.Seeds), cfg.NumGroups)
+	}
+
+	groups := make([]Group, cfg.NumGroups)
+	for i := range groups {
+		groups[i].Name = fmt.Sprintf("Group %c", 'A'+i)
+	}
+
+	used := map[string]bool{}
+	for i, seed := range cfg.Seeds {
+		groups[i].Teams = append(groups[i].Teams, seed)
+		used[seed] = true
+	}
+
+	gi := 0
+	for _, t := range teams {
+		if used[t] {
+			continue
+		}
+		minIdx := gi % cfg.NumGroups
+		minLen := len(groups[minIdx].Teams)
+		for j := 0; j < cfg.NumGroups; j++ {
+			idx := (gi + j) % cfg.NumGroups
+			if len(groups[idx].Teams) < minLen {
+				minIdx = idx
+				minLen = len(groups[idx].Teams)
+			}
+		}
+		groups[minIdx].Teams = append(groups[minIdx].Teams, t)
+		gi++
+	}
+
+	for i := range groups {
+		rounds, err := fixtures.Generate(groups[i].Teams, false)
+		if err != nil {
+			return nil, fmt.Errorf("group %s: %w", groups[i].Name, err)
+		}
+		groups[i].Rounds = rounds
+	}
+	return groups, nil
+}
+
+func GroupStandings(g *Group, results []standings.Result) ([]standings.Row, error) {
+	return standings.Table(g.Teams, results)
+}
+
+func QualifyTop(groups []Group, allResults []standings.Result, topN int) ([]string, error) {
+	var qualified []string
+	for i := range groups {
+		teamSet := map[string]bool{}
+		for _, t := range groups[i].Teams {
+			teamSet[t] = true
+		}
+		var groupResults []standings.Result
+		for _, r := range allResults {
+			if teamSet[r.Home] && teamSet[r.Away] {
+				groupResults = append(groupResults, r)
+			}
+		}
+		rows, err := standings.Table(groups[i].Teams, groupResults)
+		if err != nil {
+			return nil, fmt.Errorf("group %s: %w", groups[i].Name, err)
+		}
+		for j := 0; j < topN && j < len(rows); j++ {
+			qualified = append(qualified, rows[j].Team)
+		}
+	}
+	return qualified, nil
+}
+
+func TotalMatches(groups []Group) int {
+	count := 0
+	for _, g := range groups {
+		for _, round := range g.Rounds {
+			count += len(round)
+		}
+	}
+	return count
+}
+
+func GroupOf(groups []Group, team string) string {
+	for _, g := range groups {
+		for _, t := range g.Teams {
+			if t == team {
+				return g.Name
+			}
+		}
+	}
+	return ""
+}
+
+func SortGroups(groups []Group) {
+	sort.Slice(groups, func(i, j int) bool {
+		return groups[i].Name < groups[j].Name
+	})
+}
