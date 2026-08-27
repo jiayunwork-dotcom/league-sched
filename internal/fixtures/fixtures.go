@@ -71,7 +71,7 @@ func Generate(teams []string, double bool) ([][]Match, error) {
 		}
 		all = append(all, flipped...)
 	}
-	return OverlayScratch(all), nil
+	return all, nil
 }
 
 func Pairings(rounds [][]Match) map[string]bool {
