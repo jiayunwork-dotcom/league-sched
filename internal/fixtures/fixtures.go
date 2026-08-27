@@ -30,10 +30,6 @@ func Generate(teams []string, double bool) ([][]Match, error) {
 		seen[t] = true
 	}
 
-	if err := abortFresh(); err != nil {
-		return nil, err
-	}
-
 	list := append([]string{}, teams...)
 	if len(list)%2 == 1 {
 		list = append(list, Bye)
